@@ -4001,7 +4001,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "tfchain_monitor"
+name = "tfchainmon"
 version = "0.1.0"
 dependencies = [
  "serde",
