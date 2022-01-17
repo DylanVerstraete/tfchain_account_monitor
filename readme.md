@@ -24,5 +24,6 @@ Config file be formatted like the following:
 
 ```
 export TELEGRAM_BOT_TOKEN=token
+export TELEGRAM_CHAT_ID=-1231231
 cargo run ./config.yaml
 ```

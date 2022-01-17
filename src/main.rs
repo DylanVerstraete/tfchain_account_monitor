@@ -32,8 +32,10 @@ async fn main() {
 
     let token = env::var("TELEGRAM_BOT_TOKEN").expect("TELEGRAM_BOT_TOKEN not set");
     let api = Api::new(token);
-    let chat_id = -501732733;
-    let chat = telegram_bot::ChatId::new(chat_id);
+    // let chat_id = -501732733;
+    let chat_id = env::var("TELEGRAM_CHAT_ID").expect("TELEGRAM_BOT_TOKEN not set");
+    let id: i64 = chat_id.parse().unwrap();
+    let chat = telegram_bot::ChatId::new(id);
 
     let req = telegram_bot::requests::SendMessage::new(chat, String::from("Bot started"));
     let _ = api.send(req).await;
