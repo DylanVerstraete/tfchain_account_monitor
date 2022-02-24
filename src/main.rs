@@ -44,12 +44,11 @@ async fn main() {
         let api = api.clone();
         tokio::task::spawn(async move {
             let key: (sp_core::sr25519::Pair, _) = Pair::generate();
-            let client = Client::new(network.network_url.clone(), key.0.clone());
-
             let mut interval = time::interval(Duration::from_secs(60));
             loop {
                 interval.tick().await;
                 for acc in &network.accounts {
+                    let client = Client::new(network.network_url.clone(), key.0.clone());
                     let b = client
                         .get_account_free_balance(&acc.address.parse::<AccountId32>().unwrap());
 
