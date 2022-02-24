@@ -53,18 +53,24 @@ async fn main() {
                     let b = client
                         .get_account_free_balance(&acc.address.parse::<AccountId32>().unwrap());
 
-                    let balance = b.unwrap();
-                    let msg = format!(
-                        "\nnetwork: {} \nbalance of account {}: {} \nAddress: {}",
-                        network.network_url, acc.name, balance.free, acc.address
-                    );
-                    println!("{}", msg);
-
-                    if balance.free < 100000000 {
-                        println!("should notify telegram");
-                        let req = telegram_bot::requests::SendMessage::new(chat, msg);
-                        let res = api.send(req).await;
-                        println!("message pushed to telegram: {:?}", res);
+                    match b {
+                        Ok(balance) => {
+                            let msg = format!(
+                                "\nnetwork: {} \nbalance of account {}: {} \nAddress: {}",
+                                network.network_url, acc.name, balance.free, acc.address
+                            );
+                            println!("{}", msg);
+        
+                            if balance.free < 100000000 {
+                                println!("should notify telegram");
+                                let req = telegram_bot::requests::SendMessage::new(chat, msg);
+                                let res = api.send(req).await;
+                                println!("message pushed to telegram: {:?}", res);
+                            }
+                        },
+                        Err(err) => {
+                            println!("something went wrong trying to fetch balance: {:?}", err);
+                        }
                     }
                 }
             }
