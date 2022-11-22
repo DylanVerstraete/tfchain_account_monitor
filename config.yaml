@@ -1,5 +1,5 @@
 - network:
-  network_url: "wss://tfchain.dev.grid.tf"
+  network_url: "wss://tfchain.dev.grid.tf:443"
   accounts:
     - name: Activation Service
       address: 5GNNdXSQJC5LxKv1s2zvhCwyWyCg1msGPanHCsSNbWyu2Z2n
@@ -8,7 +8,7 @@
     - name: Offchain worker
       address: 5GRiEUaZZxuS7J1VbCvmz9LRdgyMJR9mxPE9JzCZu45JyXTx
 - network:
-  network_url: "wss://tfchain.test.grid.tf"
+  network_url: "wss://tfchain.test.grid.tf:443"
   accounts:
     - name: Activation Service
       address: 5HN7vA5Rq6u3u9W61VxtpynkrZhquoWdkj72PT4dbGiW92gC
@@ -17,7 +17,7 @@
     - name: Offchain worker
       address: 5G7MoysWYW5GMscyuZWCtybPAqFyr2V3UPnQFbjSWUm3wTjT
 - network:
-  network_url: "wss://tfchain.grid.tf"
+  network_url: "wss://tfchain.grid.tf:443"
   accounts:
     - name: Activation Service
       address: 5Ff78vjk32Wa4KXbJyFdUL1Quh7EjMw934cRbTVkNWeUVTtY

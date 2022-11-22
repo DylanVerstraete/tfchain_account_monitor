@@ -1,12 +1,12 @@
-use sp_core::crypto::Pair;
-use tfchain_client::{AccountId32, Client};
+use sp_core::crypto::{AccountId32, Pair};
 use std::env;
 use telegram_bot::Api;
+use tfchain_client::client;
 extern crate tokio;
-use tokio::time;
-use std::time::Duration;
-use serde_yaml;
 use serde::{Deserialize, Serialize};
+use serde_yaml;
+use std::time::Duration;
+use tokio::time;
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 struct Network {
@@ -28,7 +28,8 @@ async fn main() {
     }
 
     let config_file = std::fs::read(args[1].clone()).unwrap();
-    let networks: Vec<Network> = serde_yaml::from_str(String::from_utf8(config_file).unwrap().as_str()).unwrap();
+    let networks: Vec<Network> =
+        serde_yaml::from_str(String::from_utf8(config_file).unwrap().as_str()).unwrap();
 
     let token = env::var("TELEGRAM_BOT_TOKEN").expect("TELEGRAM_BOT_TOKEN not set");
     let api = Api::new(token);
@@ -48,27 +49,39 @@ async fn main() {
             loop {
                 interval.tick().await;
                 for acc in &network.accounts {
-                    let client = Client::new(network.network_url.clone(), key.0.clone());
+                    let client = client::TfchainClient::new(
+                        network.network_url.clone(),
+                        key.0.clone(),
+                        "mainnet",
+                    )
+                    .await
+                    .unwrap();
+                    // let client = Client::new(network.network_url.clone(), key.0.clone());
                     let b = client
-                        .get_account_free_balance(&acc.address.parse::<AccountId32>().unwrap());
+                        .get_balance(acc.address.parse::<AccountId32>().unwrap())
+                        .await
+                        .unwrap();
 
                     match b {
-                        Ok(balance) => {
+                        Some(balance) => {
                             let msg = format!(
                                 "\nnetwork: {} \nbalance of account {}: {} \nAddress: {}",
-                                network.network_url, acc.name, balance.free, acc.address
+                                network.network_url, acc.name, balance.data.free, acc.address
                             );
                             println!("{}", msg);
-        
-                            if balance.free < 100000000 {
+
+                            if balance.data.free < 100000000 {
                                 println!("should notify telegram");
                                 let req = telegram_bot::requests::SendMessage::new(chat, msg);
                                 let res = api.send(req).await;
                                 println!("message pushed to telegram: {:?}", res);
                             }
-                        },
-                        Err(err) => {
-                            println!("something went wrong trying to fetch balance: {:?}", err);
+                        }
+                        None => {
+                            println!(
+                                "something went wrong requestin balance from: {:}",
+                                acc.address
+                            );
                         }
                     }
                 }
