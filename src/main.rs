@@ -38,6 +38,9 @@ async fn main() {
     let id: i64 = chat_id.parse().unwrap();
     let chat = telegram_bot::ChatId::new(id);
 
+    let tft_threshold_env = env::var("TFT_THRESHOLD").unwrap_or("10".to_string());
+    let tft_threshold: i64 = tft_threshold_env.parse().unwrap();
+
     let req = telegram_bot::requests::SendMessage::new(chat, String::from("Bot started"));
     let _ = api.send(req).await;
 
@@ -70,7 +73,7 @@ async fn main() {
                             );
                             println!("{}", msg);
 
-                            if balance.data.free < 100000000 {
+                            if balance.data.free < (tft_threshold * 10000000) as u128 {
                                 println!("should notify telegram");
                                 let req = telegram_bot::requests::SendMessage::new(chat, msg);
                                 let res = api.send(req).await;

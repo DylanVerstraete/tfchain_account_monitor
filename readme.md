@@ -42,8 +42,11 @@ and find the corresponding chat group and extract the ID.
 
 ## Running
 
+Default TFT Treshold is set to 10 TFT.
+
 ```
 export TELEGRAM_BOT_TOKEN=token
 export TELEGRAM_CHAT_ID=-1231231
+export TFT_THRESHOLD=100
 cargo run ./config.yaml
 ```
