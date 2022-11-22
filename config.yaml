@@ -3,25 +3,34 @@
   accounts:
     - name: Activation Service
       address: 5GNNdXSQJC5LxKv1s2zvhCwyWyCg1msGPanHCsSNbWyu2Z2n
+      threshold: 10
     - name: Bridge
       address: 5Dfiaccytu741LE8KxqegrBeVKgmCKRHU7KEuamf3igxgGW9
+      threshold: 10
     - name: Offchain worker
       address: 5GRiEUaZZxuS7J1VbCvmz9LRdgyMJR9mxPE9JzCZu45JyXTx
+      threshold: 10
 - network:
   network_url: "wss://tfchain.test.grid.tf:443"
   accounts:
     - name: Activation Service
       address: 5HN7vA5Rq6u3u9W61VxtpynkrZhquoWdkj72PT4dbGiW92gC
+      threshold: 10
     - name: Bridge
       address: 5HgMtm5FJPWgpTx86Qv8PWwdRdPoQxhxdo9FyExKKK7X3YBW
+      threshold: 10
     - name: Offchain worker
       address: 5G7MoysWYW5GMscyuZWCtybPAqFyr2V3UPnQFbjSWUm3wTjT
+      threshold: 10
 - network:
   network_url: "wss://tfchain.grid.tf:443"
   accounts:
     - name: Activation Service
       address: 5Ff78vjk32Wa4KXbJyFdUL1Quh7EjMw934cRbTVkNWeUVTtY
+      threshold: 10
     - name: Bridge
       address: 5DtRWJCFyFhTfDaciuPoZKDSxz4ifmFRnnwqQZmAkX9yELoV
+      threshold: 10
     - name: Offchain worker
       address: 5HgPDDd6e7SKkv6Xob2RqtTUBZvJi1XMWHJqL5FBcHyHPWzV
+      threshold: 10

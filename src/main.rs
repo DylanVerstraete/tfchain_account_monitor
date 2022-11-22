@@ -18,7 +18,10 @@ struct Network {
 struct Account {
     name: String,
     address: String,
+    threshold: i64,
 }
+
+const PRECISION: i64 = 10000000;
 
 #[tokio::main]
 async fn main() {
@@ -37,9 +40,6 @@ async fn main() {
     let chat_id = env::var("TELEGRAM_CHAT_ID").expect("TELEGRAM_BOT_TOKEN not set");
     let id: i64 = chat_id.parse().unwrap();
     let chat = telegram_bot::ChatId::new(id);
-
-    let tft_threshold_env = env::var("TFT_THRESHOLD").unwrap_or("10".to_string());
-    let tft_threshold: i64 = tft_threshold_env.parse().unwrap();
 
     let req = telegram_bot::requests::SendMessage::new(chat, String::from("Bot started"));
     let _ = api.send(req).await;
@@ -68,16 +68,18 @@ async fn main() {
                     match b {
                         Some(balance) => {
                             let msg = format!(
-                                "\nnetwork: {} \nbalance of account {}: {} \nAddress: {}",
-                                network.network_url, acc.name, balance.data.free, acc.address
+                                "\nnetwork: {} \nbalance of account {}: {} TFT \nAddress: {}",
+                                network.network_url,
+                                acc.name,
+                                balance.data.free / PRECISION as u128,
+                                acc.address
                             );
                             println!("{}", msg);
 
-                            if balance.data.free < (tft_threshold * 10000000) as u128 {
-                                println!("should notify telegram");
+                            if balance.data.free < (acc.threshold * PRECISION) as u128 {
                                 let req = telegram_bot::requests::SendMessage::new(chat, msg);
-                                let res = api.send(req).await;
-                                println!("message pushed to telegram: {:?}", res);
+                                let _ = api.send(req).await;
+                                println!("message pushed to telegram bot");
                             }
                         }
                         None => {
